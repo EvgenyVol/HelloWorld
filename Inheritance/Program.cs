@@ -8,13 +8,40 @@ namespace Inheritance
         {
             Console.WriteLine("Hello World!");
 
-            Cat cat = new Cat("Kisik", 24, "white", 12);
+            //Cat cat = new Cat("Kisik", 24, "white", 12);
 
-            Console.WriteLine(cat.Name);
+            //Console.WriteLine(cat.Name);
             //cat.Name = "Kisik";
             //cat.LengthTail = 12;
             //cat.Weight = 24;
             //cat.Color = "white";
+
+            Person evgeny = new Person("Evgeny");
+            Person alimar = new Person("Alimar");
+            ChangeRequest c1 = new FeatureRequest(
+                "Volume knob shoud go to eleven",
+                "It's one louder",
+                evgeny,
+                alimar);
+
+            ChangeRequest c2 = new DefectFixRequest(
+                "Power switch can electrocute user",
+                "Very dangerous",
+                evgeny,
+                alimar);
+
+            ChangeRequest c3 = null;
+
+
+            FeatureRequest f1 = (FeatureRequest)c1;
+            FeatureRequest f2 = (FeatureRequest)c2;
+            FeatureRequest f3 = (FeatureRequest)c3;
+
+            if (c1 is FeatureRequest)
+            {
+                FeatureRequest f = (FeatureRequest)c1;
+                Console.WriteLine(f.RequestedBy.Name);
+            }
 
         }
     }
@@ -37,6 +64,11 @@ namespace Inheritance
 
     class DefectFixRequest : ChangeRequest
     {
+        public DefectFixRequest(string title, string description, Person implementer, Person reporter)
+            : base(title, description, implementer)
+        {
+            this.Reporter = reporter;
+        }
         public string ExpectedBehavior { get; set; }
         public string ObservedBehavior { get; set; }
         public Person Reporter { get; set; }
@@ -44,25 +76,39 @@ namespace Inheritance
 
     class FeatureRequest : ChangeRequest
     {
+        public FeatureRequest(string title, string description, Person implementer, Person requestedBy)
+            : base(title, description, implementer)
+        {
+            this.RequestedBy = requestedBy;
+        }
         public Person RequestedBy { get; set; }
     }
 
     class Animal
     {
-        public string _name { get; set; }
-        public int weight { get; set; }
+        public Animal(string name, int weight, string color)
+        {
+            this.Name = name;
+            this.Weight = weight;
+            this.Color = color;
+        }
+        public string Name { get; set; }
+        public int Weight { get; set; }
         public string Color { get; set; }
     }
 
     class Cat : Animal
     {
-        public Cat(string name, int weigth, string color, int lengthTail)
-        {
-             _name = name;
-            weight = weigth;
-            this.Color = color;
-            _lengthTail = lengthTail; 
-        }
-        private int _lengthTail { get; set; }
+        public Cat(string name, int weight, string color, int lengthTail)
+                : base(name, weight, color)
+            {
+                this.LengthTail = lengthTail;
+            }
+            // _name = name;
+           // weight = weigth;
+           // this.Color = color;
+           // _lengthTail = lengthTail; 
+       
+         public int LengthTail { get; set; }
     }
 }
